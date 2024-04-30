@@ -8,7 +8,7 @@
       src="https://kit.fontawesome.com/d8f052c6cf.js"
       crossorigin="anonymous"
     ></script>
-    <script type="text/javascript" src="script.js"></script>
+    <script defer type="text/javascript" src="script.js"></script>
   </head>
   <body>
     <!-- Container for entire form. -->
@@ -20,14 +20,15 @@
 
         <!-- Registration Form -->
         <form id="registration">
-          <input name="username" type="text" placeholder="Username" />
+          <input name="username" type="text" placeholder="Username" pattern="^(\d|\w)+$" title="The username cannot contain any special characters or whitespace."
+           />
           <span class="input-icon"><i class="fa-solid fa-user"></i></span><br />
 
-          <input name="email" type="text" placeholder="Email" />
+          <input name="email" type="email" placeholder="Email" pattern="^\S+@\S+\.\S+$" title="The email must be a valid email address."/>
           <span class="input-icon"><i class="fa-solid fa-envelope"></i></span
           ><br />
 
-          <input name="password" type="text" placeholder="Password" />
+          <input name="password" type="password" placeholder="Password" />
           <span class="input-icon"><i class="fa-solid fa-key"></i></span><br />
 
           <input

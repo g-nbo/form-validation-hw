@@ -5,21 +5,20 @@ const password = regForm.elements['password'];
 const passwordCheck = regForm.elements['passwordCheck'];
 const terms = regForm.elements['terms'];
 
-
-let errorDisplay = document.getElementById("errorDisplay");
-const storeTitle = JSON.parse(localStorage.getItem('title'));
+const errorDisplay = document.getElementById("errorDisplay");
 
 regForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const valid = validateSubmissions();
 
-
     if (valid) {
-        const userArr = [];
-        let user = {username: userName.value.toLowerCase(), email: email.value, password: password.value};
-        userArr.push(user);
-        localStorage.setItem('title', JSON.stringify(userArr));
-        
+        let user = {
+            username: userName.value.toLowerCase(),
+            email: email.value,
+            password: password.value
+        };
+        localStorage.setItem(userName.value.toLowerCase(), JSON.stringify(user));
+
         regForm.submit();
         alert("successful submission");
     }
@@ -135,13 +134,16 @@ function validateTerms() {
     }
 }
 
+
+
 function validateUniqName() {
-    // storeTitle.forEach(element => {
-    //     if(element.username === userName.value) {
-    //         console.log('already have this username');
-    //         return false;
-    //     }
-    // });
+    if (JSON.parse(localStorage.getItem(userName.value))) {
+
+        return false;
+    } else {
+
+        return true;
+    }
 }
 
 const logForm = document.getElementById("login");
@@ -151,11 +153,13 @@ const keepLogin = logForm.elements['persist'];
 
 logForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    if(valLogin()) {
-        console.log("true")
+    let loginInfo = localStorage.getItem((logUserName.value))
+
+    const validLogin = valLogin();
+    if (validLogin) {
         logForm.submit();
-        
-        if(keepLogin.checked) {
+
+        if (keepLogin.checked) {
             alert("successful login! Keeping you logged in!");
         } else {
             alert("successful login!");
@@ -164,34 +168,43 @@ logForm.addEventListener("submit", (event) => {
 })
 
 function valLogin() {
-    validUserLog();
-    validPassLog();
+    const valLogUser = validUserLog();
+    const valLogPass = validPassLog();
 
-    if(validUserLog === false) {
+    if (valLogUser === false) {
         return false;
-    } 
-    if(validPassLog === false) {
-        return false;
-    } else {
-        return true;
     }
+    if (valLogPass === false) {
+        return false;
+    }
+    return true;
 }
 
 function validUserLog() {
-    if(logUserName.value === '') {
+    if (logUserName.value === '') {
+        alert("Empty Username")
         return false;
-    } else if(logUserName.value.toLowerCase() === storeTitle[0].username) {
+    } else if (localStorage.getItem(logUserName.value)) {
         return true;
     } else {
-        alert("Do not recognize your password and login")
+        alert("Do not recognize your password and login");
+        return false;
     }
 }
 
 function validPassLog() {
-    if(logPass === "") {
+    const loginInfo = localStorage.getItem((logUserName.value))
+
+    if (logPass.value === "") {
+        alert("Empty Password")
         return false;
-    } else if(logPass.value === storeTitle[0].password) {
+    } if (logUserName.value === "") {
+        return false;
+    } else if (JSON.parse(loginInfo).password === logPass.value) {
         return true;
+    } else {
+        alert("Do not recognize your password and login");
+        return false;
     }
 }
 

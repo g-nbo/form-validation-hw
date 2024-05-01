@@ -5,10 +5,9 @@ const password = regForm.elements['password'];
 const passwordCheck = regForm.elements['passwordCheck'];
 const terms = regForm.elements['terms'];
 
-const logForm = document.getElementById("login");
 
 let errorDisplay = document.getElementById("errorDisplay");
-// const storeTitle = JSON.parse(localStorage.getItem('title'));
+const storeTitle = JSON.parse(localStorage.getItem('title'));
 
 regForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -144,3 +143,55 @@ function validateUniqName() {
     //     }
     // });
 }
+
+const logForm = document.getElementById("login");
+const logUserName = logForm.elements['username'];
+const logPass = logForm.elements['password'];
+const keepLogin = logForm.elements['persist'];
+
+logForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if(valLogin()) {
+        console.log("true")
+        logForm.submit();
+        
+        if(keepLogin.checked) {
+            alert("successful login! Keeping you logged in!");
+        } else {
+            alert("successful login!");
+        }
+    }
+})
+
+function valLogin() {
+    validUserLog();
+    validPassLog();
+
+    if(validUserLog === false) {
+        return false;
+    } 
+    if(validPassLog === false) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function validUserLog() {
+    if(logUserName.value === '') {
+        return false;
+    } else if(logUserName.value.toLowerCase() === storeTitle[0].username) {
+        return true;
+    } else {
+        alert("Do not recognize your password and login")
+    }
+}
+
+function validPassLog() {
+    if(logPass === "") {
+        return false;
+    } else if(logPass.value === storeTitle[0].password) {
+        return true;
+    }
+}
+
